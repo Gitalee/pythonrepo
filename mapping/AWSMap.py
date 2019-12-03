@@ -1,30 +1,40 @@
 import json as js
 loadedData =js.loads(open("newmapping.json").read())
-outputData=js.loads(open("D://task1//output//EC2.json").read())
+outputData=js.loads(open("D://task1//output//Ec2withEBS.json").read())
 servicesNames=[]
 finalArray=[]
 finalDict = {}
 for serviceData in outputData:
     dic = {}
-    servicesList=str(serviceData.keys())
-    servicesList = servicesList.split("::")
-    name=servicesList[1]
-    serviceMap = loadedData["ServiceMap"]
-    #print(serviceMap)
-    serviceTypes=serviceMap[name]
-    serviceType=servicesList[2].split("'")
-    for serviceMap in serviceTypes:
-        finalDict[name]=serviceMap
-        d=serviceTypes[serviceMap]
-        for ty in d:
-            if ty == serviceType[0]:
-                finalDict[serviceType[0]]=d[ty]
-    for c in serviceData:
-        r=serviceData[c]
-        v=loadedData['Mappings']
-        vv=v[name]
-        b=r['InstanceType']
-        q=vv['InstanceType']
-        finalDict[b]=q[b]
-print(finalDict)
+    finalDict = {}
+    for singleService in serviceData:
+        servicesList = singleService.split("::")
+        serviceType=servicesList[1]
+        serviceMap = loadedData["ServiceMap"]
+        #print(serviceMap)
+        splitedType=servicesList[2].split("'")
+        subType=splitedType[0]
+        mapOfService = serviceMap[serviceType]
+        propMap = loadedData['Mappings']
+        if serviceType == 'EC2':
+            specPropMap = propMap['EC2']
+            if subType=='Instance':
+                for main in mapOfService:
+                    finalDict[serviceType]=main
+                    for subMap in mapOfService[main]:
+                        if subType == subMap:
+                            finalDict[subType]=mapOfService[main][subMap]
+                mapOfInstanceType=specPropMap['Instance']['InstanceType']
+                for instanceType in mapOfInstanceType:
+                    if instanceType==serviceData[singleService]['InstanceType']:
+                        finalDict[instanceType]=mapOfInstanceType[instanceType]
+                        finalArray.append(finalDict)
+            elif subType=='Volume':
+                for main in mapOfService:
+                    finalDict[serviceType]=main
+                    for subMap in mapOfService[main]:
+                        if subType == subMap:
+                            finalDict[subType]=mapOfService[main][subMap]
+                            finalArray.append(finalDict)
+print(finalArray)
 
