@@ -16,7 +16,7 @@
             "DeviceName": "/dev/sdc",
 
             "Ebs": {
-              "VolumeSize": "4"
+              "VolumeSize": "5"
             }
 
           },
@@ -26,7 +26,7 @@
             "DeviceName": "/dev/sdd",
 
             "Ebs": {
-              "VolumeSize": "3"
+              "VolumeSize": "8"
             }
 
           }
@@ -40,6 +40,7 @@
         "InstanceType": "t2.micro",
 
         "SecurityGroups": ["default"],
+         "KeyName": "ec2withebs",
 
         "Volumes": [
 
@@ -53,6 +54,24 @@
         ]
 
       }
+
+    },
+    "Vm2": {
+
+      "Type": "AWS::EC2::Instance",
+
+      "Properties": {
+
+        "AvailabilityZone": "us-east-1b",
+
+        "ImageId": "ami-00068cd7555f543d5",
+
+        "InstanceType": "t2.small",
+
+        "SecurityGroups": ["default"],
+         "KeyName": "ec2withebs"
+
+       }
 
     },
 

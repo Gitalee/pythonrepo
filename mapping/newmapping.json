@@ -1,13 +1,9 @@
 {
       "Mappings": {
-            "EC2": {
-                  "Instance":{
-                        "InstanceType": {
-                        "t2.micro": {
-                              "Gcp1": "f1-micro",
-                              "Gcp2": "g1-small"
-                        },
-                        "m3.medium - m3.2xlarge": {
+		"InstanceType": {
+            "t2.micro": "f1-micro",
+             "t2.small":"m1-micro",
+			"m3.medium - m3.2xlarge": {
                               "Gcp": "n1-standard-1 - n1-standard-64"
                         },
                         "m4.large - m4.10xlarge": {
@@ -30,21 +26,23 @@
                               "Gcp2": "n1-highmem-2 - n1-highmem-64",
                               "Gcp3": "n1-highcpu-2 - n1-highcpu-64"
                         }
-                        }
-                  },
-
-                  "Volume":{
-                        "Size":"3"
-                  }
-            }
+                        }      
+                        
+         
+            },
+      "Services": {
+            "EC2": "compute",
+			"Volume":"Disk"
+            
       },
-      "ServiceMap": {
-            "EC2": {
-                  "Compute-Engine": {
-                        "Instance": "VM",
-                        "Volume" : "Disk"
-                  }
-            }
-      }
+	  "Subservices":{
+		"Instance":"instance",
+		"Volume":"disk"
+	  },
+	  "Properties":{
+		"AvailabilityZone":"zone",
+		"InstanceType":"machineType",
+		"Size":"sizeGb"
+	  }
 
 }
