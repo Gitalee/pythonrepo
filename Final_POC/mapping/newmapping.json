@@ -81,8 +81,7 @@
                   "sa-east-1":"southamerica-east1"
             }
 
-		} 
-      },
+		},
       "Services": {
             "EC2": "compute",
 			"Volume":"Disk"
