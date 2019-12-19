@@ -22,7 +22,7 @@ class Gcptemplate:
         if os.path.isfile(self.createfilepath("AWSTemplates", filename)):
             return True
         else:
-            prints("File not exist")
+            print("File not exist")
             return False
 
     def getserviceprop(self,filename):
@@ -91,5 +91,6 @@ class Gcptemplate:
                             i['properties']['machineType'] = 'zones/'+i['properties']['zone']+'/machineTypes/'+x['properties']['machineType']
                         array.append(i)
                 dict['resources'] = array
-            with open(self.createfilepath("AWS_GCP_Temp","filename.yaml"), 'w+') as file:
+                x = filename.split(".")
+            with open(self.createfilepath("AWS_GCP_Temp",x[0]+".yaml"), 'w+') as file:
                 documents = yaml.safe_dump(dict, file,default_flow_style=False,indent=2)
