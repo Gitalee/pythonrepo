@@ -5,7 +5,6 @@ import json as js
 import yaml
 import pathlib
 
-
 class Gcptemplate:
     """
     this class gives gcptemplate
@@ -50,7 +49,6 @@ class Gcptemplate:
         templateData = self.getserviceprop(filename)
         finalGcpArray = []
         count = 0
-        print(len(templateData))
         for serviceData in templateData:
             finalGcpDict = {}
             for singleService in serviceData:
@@ -80,17 +78,19 @@ class Gcptemplate:
         with open(self.createfilepath("GCPTemplates","gcpVolume.yaml"), 'r') as stream:
             dictionary = yaml.safe_load(stream)
             array = []
-            for i in finalGcpArray:
+            for mapRes in finalGcpArray:
                 resourcesList = dictionary['resources']
-                for x in resourcesList:
-                    if x['type'] == i['type']:
-                        x['properties'].update(i['properties'])
-                        i['properties'] = x['properties']
-                        propList = i['properties'].keys()
+                for referRes in resourcesList:
+                    if referRes['type'] == mapRes['type']:
+                        propList = mapRes['properties'].keys()
                         if 'machineType' in propList:
-                            i['properties']['machineType'] = 'zones/'+i['properties']['zone']+'/machineTypes/'+x['properties']['machineType']
-                        array.append(i)
+                            mapRes['properties']['machineType']='zones/'+mapRes['properties']['zone']+'/machineTypes/'+mapRes['properties']['machineType']
+                        referRes['properties'].update(mapRes['properties'])
+                        mapRes['properties']=referRes['properties']
+
+                        array.append(mapRes)
                 dict['resources'] = array
                 x = filename.split(".")
+                print(x)
             with open(self.createfilepath("AWS_GCP_Temp",x[0]+".yaml"), 'w+') as file:
                 documents = yaml.safe_dump(dict, file,default_flow_style=False,indent=2)
